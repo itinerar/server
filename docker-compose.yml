@@ -1,0 +1,24 @@
+version: "3"
+services:
+    itinerar_db:
+        container_name: itinerar-db
+        image: mysql:5.7
+        environment:
+            MYSQL_DATABASE: itinerar
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+        restart: always
+
+    itinerar_app:
+        restart: always
+        build: .
+        container_name: itinerar-app
+        working_dir: /app
+        volumes:
+            - .:/app
+        expose:
+            - "8080"
+        command: mvn clean spring-boot:run
+        depends_on:
+            - itinerar_db
